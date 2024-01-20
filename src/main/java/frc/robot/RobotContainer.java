@@ -1,6 +1,6 @@
 package frc.robot;
 
-import frc.robot.commands.LEDSequence;
+import frc.robot.commands.SetLEDs;
 import frc.robot.subsystems.LEDState;
 import frc.robot.subsystems.LEDs;
 
@@ -20,18 +20,13 @@ public class RobotContainer {
   private final Trigger bButton = operator.b();
 
   public RobotContainer() {
-    s_LEDs.setDefaultCommand(new RunCommand(() -> {
-      s_LEDs.set(LEDState.GREEN);
-    }, s_LEDs));
+    s_LEDs.setDefaultCommand(new SetLEDs(s_LEDs, LEDState.ENABLED));
 
     configureBindings();
   }
 
   private void configureBindings() {
-    xButton.onTrue(new LEDSequence(s_LEDs,LEDState.ORANGE, .2, 2));
-    yButton.onTrue(new LEDSequence(s_LEDs,LEDState.RED, .2, 2));
-    aButton.onTrue(new LEDSequence(s_LEDs,LEDState.BLUE, .2, 2));
-    bButton.onTrue(new LEDSequence(s_LEDs,LEDState.YELLOW, .2, 2));
+    
   }
 
   public Command getAutonomousCommand() {

@@ -24,12 +24,11 @@ public class LEDs extends SubsystemBase {
     candle.animate(animation);
   }
 
-  public void strobe(LEDState state, double speed){
-    candle.animate(new StrobeAnimation(state.red, state.green, state.blue, state.white, speed, Constants.CANdleConstants.ledNum));
+  public void strobe(LEDState state){
+    candle.animate(new StrobeAnimation(state.red, state.green, state.blue, state.white, state.speed, Constants.CANdleConstants.ledNum));
   }
 
   @Override
   public void periodic() {
-    
   }
 }

@@ -5,19 +5,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LEDState;
 import frc.robot.subsystems.LEDs;
 
-public class LEDSequence extends Command {
+public class SetLEDs extends Command {
   
   private final LEDs s_LEDs;
   private final LEDState state;
   private double timeStamp;
-  private double seconds;
-  private double speed;
 
-  public LEDSequence(LEDs s_LEDs, LEDState state, double speed, double seconds) {
+  public SetLEDs(LEDs s_LEDs, LEDState state) {
     this.s_LEDs = s_LEDs;
     this.state = state;
-    this.seconds = seconds;
-    this.speed = speed;
 
     addRequirements(s_LEDs);
   }
@@ -31,20 +27,27 @@ public class LEDSequence extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_LEDs.strobe(state, speed);
+    if(state.strobe){
+      s_LEDs.strobe(state);
+    } else {
+      s_LEDs.set(state);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    s_LEDs.set(LEDState.GREEN);
+    s_LEDs.set(LEDState.ENABLED);
     s_LEDs.setAnimation(null);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Timer.getFPGATimestamp() - timeStamp >= seconds;
-
+    if(state.strobe){
+      return Timer.getFPGATimestamp() - timeStamp >= state.time;
+    } else {
+      return false;
+    }
   }
 }
